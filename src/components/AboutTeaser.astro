@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import { Image } from 'astro:assets';
 import ButtonCta from './ButtonCta.astro';
 import Icon from './Icon.astro';
@@ -46,7 +47,7 @@ const suitIcons: Record<SuitIcon, string> = { club, diamond, heart, spade };
     </ul>
   </div>
 
-  <ButtonCta label="More about me" href="/about/" />
+  <ButtonCta label="More about me" href={withBase('/about/')} />
 </section>
 
 <style>

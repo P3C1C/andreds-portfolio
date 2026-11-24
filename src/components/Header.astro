@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import Icon from './Icon.astro';
 import AudioWave from './AudioWave.astro';
 import MenuButton from './MenuButton.astro';
@@ -7,7 +8,7 @@ import homeIcon from '../assets/icons/home.svg?url';
 ---
 
 <header class="site-header" data-loader-lock>
-  <a href="/" class="site-header__home" aria-label="Home">
+  <a href={withBase('/')} class="site-header__home" aria-label="Home">
     <Icon src={homeIcon} />
   </a>
   <AudioWave />

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import Icon from './Icon.astro';
 import moon from '../assets/icons/moon.svg?url';
 import speaker from '../assets/icons/speaker.svg?url';
@@ -8,10 +9,10 @@ import { DEFAULT_THEME } from '../lib/theme';
 <nav class="site-menu" id="site-menu" data-menu hidden aria-label="Site">
   <ul class="site-menu__list" role="list">
     <li>
-      <a class="site-menu__row text-button uppercase" href="/about/">A bit about me</a>
+      <a class="site-menu__row text-button uppercase" href={withBase('/about/')}>A bit about me</a>
     </li>
     <li>
-      <a class="site-menu__row text-button uppercase" href="/projects/">My work</a>
+      <a class="site-menu__row text-button uppercase" href={withBase('/projects/')}>My work</a>
     </li>
     <li>
       <button

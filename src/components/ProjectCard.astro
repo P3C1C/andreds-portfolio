@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
@@ -13,7 +14,7 @@ const { title, client, type, year, thumbnail, cover } = project.data;
 ---
 
 <li class="project-card">
-  <a class="project-card__link" href={`/projects/${project.id}/`}>
+  <a class="project-card__link" href={withBase(`/projects/${project.id}/`)}>
     <span class="project-card__type text-body-small">{type}</span>
     <span class="project-card__main">
       <span class="project-card__titles">

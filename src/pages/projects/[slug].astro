@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/url';
 import type { GetStaticPaths } from 'astro';
 import { Image } from 'astro:assets';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
@@ -70,7 +71,7 @@ const restRows = rows.slice(1);
     next && (
       <section class="detail-next" aria-labelledby="next-title">
         <h2 id="next-title" class="text-display-accent">next</h2>
-        <a class="detail-next__link" href={`/projects/${next.id}/`}>
+        <a class="detail-next__link" href={withBase(`/projects/${next.id}/`)}>
           <span class="visually-hidden">Next project: {next.data.title}</span>
           <Image
             src={next.data.cover}

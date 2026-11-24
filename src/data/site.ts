@@ -1,3 +1,5 @@
+import { withBase } from '../lib/url';
+
 export const site = {
   name: 'Andrea Rossi',
   role: 'UI/UX Designer & Brand Designer',
@@ -9,6 +11,6 @@ export const site = {
 } as const;
 
 export const navLinks = [
-  { label: 'Projects', href: '/projects' },
-  { label: 'About me', href: '/about' },
+  { label: 'Projects', href: withBase('/projects/') },
+  { label: 'About me', href: withBase('/about/') },
 ] as const;
