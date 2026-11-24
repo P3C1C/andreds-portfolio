@@ -1,0 +1,191 @@
+---
+import Icon from './Icon.astro';
+import star from '../assets/icons/star.svg?url';
+import { testimonials } from '../data/testimonials';
+
+const watermark = 'Telling Stories through design';
+---
+
+<section class="testimonials" aria-labelledby="testimonials-title">
+  <div class="testimonials__watermark" aria-hidden="true">
+    <span>{watermark}</span>
+    <span>{watermark}</span>
+  </div>
+
+  <h2 id="testimonials-title" class="testimonials__title">
+    <span class="text-display uppercase">What people</span>
+    <span class="text-display-accent">say about me</span>
+  </h2>
+
+  <ul class="testimonials__list" role="list">
+    {
+      testimonials.map((testimonial) => (
+        <li class="testimonials__card">
+          <span class="testimonials__stars" role="img" aria-label="5 out of 5 stars">
+            {Array.from({ length: 5 }, () => (
+              <Icon src={star} size={16} />
+            ))}
+          </span>
+          <blockquote class="text-body-small">
+            {testimonial.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </blockquote>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .testimonials {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3.0625rem;
+    min-height: 51.1875rem;
+    padding: 8.9375rem 2rem 9rem;
+    overflow: hidden;
+  }
+
+  .testimonials__watermark {
+    position: absolute;
+    inset: 0;
+    font-family: var(--font-title);
+    font-size: 26.75rem;
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+    pointer-events: none;
+  }
+
+  .testimonials__watermark span {
+    position: absolute;
+  }
+
+  .testimonials__watermark span:first-child {
+    top: 1.9375rem;
+    left: 0;
+  }
+
+  .testimonials__watermark span:last-child {
+    top: 24rem;
+    right: 0;
+  }
+
+  .testimonials__title {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: inherit;
+  }
+
+  .testimonials__list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2.375rem;
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .testimonials__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 14.625rem;
+  }
+
+  .testimonials__card:nth-child(even) {
+    max-width: none;
+    padding-left: 4rem;
+  }
+
+  .testimonials__stars {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .testimonials__stars :global(.icon) {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .testimonials blockquote {
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .testimonials__card {
+      max-width: 60%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .testimonials {
+      display: block;
+      min-height: 67.5rem;
+      padding: 16.875rem var(--page-gutter) 8rem;
+    }
+
+    .testimonials__watermark {
+      font-size: 33.4375vw;
+    }
+
+    .testimonials__watermark span:first-child {
+      top: 9.59375rem;
+    }
+
+    .testimonials__watermark span:last-child {
+      top: 32.5625rem;
+    }
+
+    .testimonials__stars :global(.icon) {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .testimonials__list {
+      display: grid;
+      grid-template-columns: 447fr 434fr;
+      column-gap: 6.0625rem;
+      max-width: 61.125rem;
+      margin: 1.875rem auto 0;
+      left: 1.0625rem;
+    }
+
+    .testimonials__card,
+    .testimonials__card:nth-child(even) {
+      max-width: none;
+      padding-left: 0;
+    }
+
+    .testimonials__card:nth-child(1) {
+      grid-area: 1 / 1;
+    }
+
+    .testimonials__card:nth-child(2) {
+      grid-area: 2 / 1;
+      width: 70%;
+      margin: 0.1875rem 0 0 0.5rem;
+    }
+
+    .testimonials__card:nth-child(3) {
+      grid-area: 1 / 2;
+      margin-top: 2.4375rem;
+    }
+
+    .testimonials__card:nth-child(4) {
+      grid-area: 2 / 2;
+      width: 140.5%;
+      margin: 2.6875rem 0 0 -40.5%;
+    }
+  }
+</style>

@@ -1,0 +1,96 @@
+<div
+  class="loading-screen"
+  data-loader
+  role="progressbar"
+  aria-label="Loading"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-valuenow="0"
+  aria-hidden="true"
+>
+  <span class="loading-screen__count" data-loader-count>0</span>
+</div>
+
+<script>
+  import { LOADER_DURATION_MS, LOADER_STORAGE_KEY, loaderProgress } from '../lib/loader';
+
+  const root = document.documentElement;
+  const screen = document.querySelector<HTMLElement>('[data-loader]');
+  const counter = document.querySelector<HTMLElement>('[data-loader-count]');
+
+  const releasePage = () => {
+    document.querySelectorAll<HTMLElement>('[data-loader-lock]').forEach((element) => {
+      element.removeAttribute('inert');
+    });
+  };
+
+  const finish = () => {
+    try {
+      sessionStorage.setItem(LOADER_STORAGE_KEY, 'true');
+    } catch {
+      // Without storage the loader simply plays again on the next page.
+    }
+    delete root.dataset.loading;
+    screen?.setAttribute('aria-hidden', 'true');
+    releasePage();
+  };
+
+  if (root.dataset.loading && screen && counter) {
+    screen.removeAttribute('aria-hidden');
+    const start = performance.now();
+    const tick = (now: number) => {
+      const value = loaderProgress(now - start, LOADER_DURATION_MS);
+      counter.textContent = String(value);
+      screen.setAttribute('aria-valuenow', String(value));
+      if (value < 100) {
+        requestAnimationFrame(tick);
+      } else {
+        finish();
+      }
+    };
+    requestAnimationFrame(tick);
+  } else {
+    delete root.dataset.loading;
+    releasePage();
+  }
+</script>
+
+<style>
+  .loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 400ms ease,
+      visibility 0s linear 400ms;
+  }
+
+  :global(html[data-loading]) .loading-screen {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  :global(html[data-loading]),
+  :global(html[data-loading] body) {
+    overflow: hidden;
+  }
+
+  .loading-screen__count {
+    min-width: 2.5rem;
+    font-family: var(--font-pixel);
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

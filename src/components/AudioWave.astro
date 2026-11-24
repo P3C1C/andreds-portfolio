@@ -1,0 +1,80 @@
+---
+const bars = [
+  { height: 16, delay: 0 },
+  { height: 8, delay: -0.35 },
+  { height: 8, delay: -0.7 },
+  { height: 16, delay: -0.2 },
+  { height: 12, delay: -0.55 },
+  { height: 8, delay: -0.9 },
+  { height: 12, delay: -0.15 },
+  { height: 12, delay: -0.5 },
+  { height: 16, delay: -0.85 },
+  { height: 4, delay: -0.3 },
+  { height: 8, delay: -0.65 },
+  { height: 16, delay: -0.1 },
+];
+---
+
+<button type="button" class="audio-wave" data-mute-toggle aria-pressed="false" aria-label="Mute sound">
+  {
+    bars.map(({ height, delay }) => (
+      <span class="audio-wave__bar" style={`--bar-height: ${height}px; --bar-delay: ${delay}s;`} aria-hidden="true" />
+    ))
+  }
+</button>
+
+<style>
+  .audio-wave {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 1.5rem;
+    padding-inline: 0.25rem;
+    color: var(--color-text-primary);
+  }
+
+  .audio-wave__bar {
+    display: block;
+    width: 2px;
+    height: var(--bar-height);
+    border-radius: 2px 2px 1px 1px;
+    background-color: currentColor;
+    transform-origin: 50% 50%;
+  }
+
+  :global(html[data-muted='true']) .audio-wave__bar {
+    transform: scaleY(0.25);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html:not([data-muted='true'])) .audio-wave__bar {
+      animation: wave-burst 7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      animation-delay: var(--bar-delay);
+    }
+  }
+
+  @keyframes wave-burst {
+    0% {
+      transform: scaleY(0.45);
+    }
+    5% {
+      transform: scaleY(0.95);
+    }
+    9.3% {
+      transform: scaleY(0.3);
+    }
+    14.3% {
+      transform: scaleY(0.85);
+    }
+    19.3% {
+      transform: scaleY(0.2);
+    }
+    24.3% {
+      transform: scaleY(0.9);
+    }
+    30%,
+    100% {
+      transform: scaleY(0.45);
+    }
+  }
+</style>

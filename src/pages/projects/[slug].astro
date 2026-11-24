@@ -1,0 +1,308 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryRows from '../../components/GalleryRows.astro';
+import Icon from '../../components/Icon.astro';
+import ProjectMeta from '../../components/ProjectMeta.astro';
+import { getAdjacent, sortProjects } from '../../lib/projects';
+import { groupGallery, type GalleryEntry } from '../../lib/gallery';
+import arrowDown from '../../assets/icons/arrow-elbow-down.svg?url';
+
+export const getStaticPaths = (async () => {
+  const projects = sortProjects(await getCollection('projects'));
+  return projects.map((project, index) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      number: String(index + 1).padStart(2, '0'),
+      next: getAdjacent(projects, project.id).next,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  number: string;
+  next: CollectionEntry<'projects'> | undefined;
+}
+
+const { project, number, next } = Astro.props;
+const { title, summary, categories, role, cover, coverAlt, gallery } = project.data;
+const { Content } = await render(project);
+
+const rows = groupGallery(gallery);
+const coverRow: GalleryEntry[] = [{ src: cover, alt: coverAlt, size: 'cover' }];
+const leadRows = [coverRow, ...rows.slice(0, 1)];
+const restRows = rows.slice(1);
+---
+
+<BaseLayout title={title} description={summary}>
+  <article class="detail">
+    <div class="detail__text">
+      <header class="detail__intro">
+        <div class="detail__title-group">
+          <p class="detail__number text-button">{number}</p>
+          <h1 class="text-h1 uppercase">{title}</h1>
+          <p class="text-body-small">{summary}</p>
+        </div>
+        <ProjectMeta categories={categories} role={role} />
+        <a class="detail__scroll text-button uppercase" href="#case-study">
+          <span>Scroll down</span>
+          <Icon src={arrowDown} size={16} />
+        </a>
+      </header>
+
+      <div class="detail__body" id="case-study">
+        <span class="detail__timeline" aria-hidden="true"><span></span></span>
+        <Content />
+      </div>
+    </div>
+
+    <div class="detail__gallery">
+      <GalleryRows class="detail__gallery-lead" rows={leadRows} eager />
+      {restRows.length > 0 && <GalleryRows class="detail__gallery-rest" rows={restRows} />}
+    </div>
+  </article>
+
+  {
+    next && (
+      <section class="detail-next" aria-labelledby="next-title">
+        <h2 id="next-title" class="text-display-accent">next</h2>
+        <a class="detail-next__link" href={`/projects/${next.id}/`}>
+          <span class="visually-hidden">Next project: {next.data.title}</span>
+          <Image
+            src={next.data.cover}
+            alt=""
+            widths={[360, 720, 1100]}
+            sizes="(min-width: 1024px) 32.1875rem, calc(100vw - 4rem)"
+            loading="lazy"
+          />
+        </a>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .detail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 5rem var(--page-gutter) 4rem;
+  }
+
+  .detail__text,
+  .detail__gallery {
+    display: contents;
+  }
+
+  .detail :global(.detail__gallery-lead) {
+    order: 1;
+  }
+
+  .detail__intro {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .detail :global(.detail__gallery-rest) {
+    order: 4;
+    margin-top: 2rem;
+  }
+
+  .detail__title-group {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    gap: 1rem;
+  }
+
+  .detail__number {
+    color: color-mix(in srgb, var(--color-text-primary) 50%, transparent);
+  }
+
+  .detail__intro :global(.project-meta) {
+    align-self: stretch;
+  }
+
+  .detail__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem 0.5rem 1rem;
+    color: var(--color-button-background);
+  }
+
+  .detail__body {
+    position: relative;
+    order: 3;
+    margin-top: 2rem;
+    padding-left: 2rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .detail__timeline {
+    position: absolute;
+    top: 0.6875rem;
+    bottom: 0;
+    left: 0;
+    width: 0.5rem;
+    background: linear-gradient(var(--color-background-surface), var(--color-background-surface))
+      center / 1px 100% no-repeat;
+  }
+
+  .detail__timeline::before,
+  .detail__timeline::after,
+  .detail__timeline span {
+    content: '';
+    position: absolute;
+    left: 0.046875rem;
+    width: 0.40625rem;
+    height: 0.40625rem;
+    border-radius: 50%;
+  }
+
+  .detail__timeline::before {
+    top: 0.046875rem;
+    background-color: var(--color-text-primary);
+  }
+
+  .detail__timeline::after,
+  .detail__timeline span {
+    background-color: var(--color-background-primary);
+    box-shadow: inset 0 0 0 0.03125rem var(--color-background-surface);
+  }
+
+  .detail__timeline span {
+    top: 46.9%;
+  }
+
+  .detail__timeline::after {
+    bottom: 0;
+  }
+
+  .detail__body :global(h2) {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-default);
+    text-transform: uppercase;
+  }
+
+  .detail__body :global(h2)::before {
+    content: 'the';
+    margin-right: 0.25em;
+    font-family: var(--font-accent);
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+    text-transform: none;
+  }
+
+  .detail__body :global(h2:not(:first-of-type)) {
+    margin-top: 4rem;
+  }
+
+  .detail__body :global(p) {
+    margin-top: 1.5rem;
+    font-size: var(--font-size-base);
+    line-height: var(--leading-body);
+  }
+
+  .detail__body :global(p + p) {
+    margin-top: 1rem;
+  }
+
+  .detail-next {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem var(--page-gutter) 0;
+    overflow: hidden;
+  }
+
+  .detail-next__link {
+    display: block;
+    width: 100%;
+    max-width: 32.1875rem;
+    height: 12.625rem;
+    overflow: hidden;
+    border: 1px solid var(--color-stroke-default);
+    border-bottom: 0;
+  }
+
+  .detail-next__link :global(img) {
+    width: 100%;
+    aspect-ratio: 515 / 360;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  .detail-next__link:hover :global(img),
+  .detail-next__link:focus-visible :global(img) {
+    transform: scale(1.03);
+  }
+
+  @media (min-width: 1024px) {
+    .detail {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 7.5rem var(--page-gutter) 7.875rem;
+    }
+
+    .detail__text,
+    .detail__gallery {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail__text {
+      gap: 6rem;
+      width: 24.375rem;
+    }
+
+    .detail__gallery {
+      gap: 1.5rem;
+      width: 32.1875rem;
+    }
+
+    .detail__intro {
+      align-items: stretch;
+      padding-block: 1.5rem;
+    }
+
+    .detail__title-group {
+      gap: 1.5rem;
+    }
+
+    .detail__number,
+    .detail__scroll {
+      display: none;
+    }
+
+    .detail__body,
+    .detail :global(.detail__gallery-rest) {
+      margin-top: 0;
+    }
+
+    .detail__body :global(h2:not(:first-of-type)) {
+      margin-top: 6rem;
+    }
+
+    .detail-next {
+      gap: 3.25rem;
+      padding-top: 0;
+    }
+  }
+</style>

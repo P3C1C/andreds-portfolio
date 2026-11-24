@@ -1,0 +1,30 @@
+---
+interface Props {
+  src: string;
+  size?: number;
+  label?: string;
+  class?: string;
+}
+
+const { src, size = 24, label, class: className } = Astro.props;
+---
+
+<span
+  class:list={['icon', className]}
+  style={`--icon-url: url("${src}"); --icon-size: ${size}px;`}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+></span>
+
+<style>
+  .icon {
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-color: currentColor;
+    -webkit-mask: var(--icon-url) center / contain no-repeat;
+    mask: var(--icon-url) center / contain no-repeat;
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import type { GalleryEntry } from '../lib/gallery';
+
+interface Props {
+  rows: readonly (readonly GalleryEntry[])[];
+  class?: string;
+  eager?: boolean;
+}
+
+const { rows, class: className, eager = false } = Astro.props;
+
+const sizes: Record<GalleryEntry['size'], string> = {
+  cover: '(min-width: 1024px) 32.1875rem, calc(100vw - 4rem)',
+  full: '(min-width: 1024px) 32.1875rem, calc(100vw - 4rem)',
+  large: '(min-width: 1024px) 21.25rem, 50vw',
+  small: '(min-width: 1024px) 11.125rem, 50vw',
+};
+---
+
+<div class:list={['gallery-rows', className]}>
+  {
+    rows.map((row, rowIndex) => (
+      <div class="gallery-rows__row">
+        {row.map((entry) => (
+          <figure class={`gallery-rows__item gallery-rows__item--${entry.size}`}>
+            <Image
+              src={entry.src}
+              alt={entry.alt}
+              widths={[360, 720, 1100]}
+              sizes={sizes[entry.size]}
+              loading={eager && rowIndex === 0 ? 'eager' : 'lazy'}
+            />
+          </figure>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .gallery-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .gallery-rows__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .gallery-rows__item {
+    flex: 1 1 0;
+    min-width: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .gallery-rows__item--cover {
+    aspect-ratio: 311 / 206;
+    border: 1px solid var(--color-stroke-default);
+  }
+
+  .gallery-rows__item--large {
+    aspect-ratio: 147 / 104;
+  }
+
+  .gallery-rows__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-rows,
+    .gallery-rows__row {
+      gap: 1.5rem;
+    }
+
+    .gallery-rows__item--cover {
+      aspect-ratio: auto;
+      height: 22.5rem;
+    }
+
+    .gallery-rows__item--large,
+    .gallery-rows__item--small {
+      aspect-ratio: auto;
+      height: 18.75rem;
+    }
+
+    .gallery-rows__item--large {
+      flex-grow: 322;
+    }
+
+    .gallery-rows__item--small {
+      flex-grow: 169;
+    }
+  }
+</style>

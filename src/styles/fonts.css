@@ -1,0 +1,22 @@
+@import '@fontsource/inter-tight/latin-400.css';
+@import '@fontsource/inter-tight/latin-500.css';
+@import '@fontsource/inter-tight/latin-600.css';
+@import '@fontsource/inter-tight/latin-700.css';
+@import '@fontsource/baskervville/latin-500-italic.css';
+
+/* Licensed fonts are supplied as files in public/fonts. */
+@font-face {
+  font-family: 'New Title';
+  src: url('/fonts/NewTitle-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP NeueBit';
+  src: url('/fonts/PPNeueBit-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

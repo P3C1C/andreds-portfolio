@@ -1,0 +1,39 @@
+---
+description: Portfolio design source of truth in Figma
+alwaysApply: true
+---
+
+# Figma design reference
+
+The portfolio UI is specified in the Figma file `portfoli-`.
+
+- File key: `OSen2tDZ1GECecQVY2KG21`
+- Source page: `mockup` (`9:64`)
+- URL: https://www.figma.com/design/OSen2tDZ1GECecQVY2KG21/portfoli-?node-id=9-64&m=dev
+
+Ignore page `old` (`23:2`). Page `inspo +material` (`0:1`) is mood only. Page `asset` (`188:1630`) holds assets, not screens.
+
+Tokens live in the file: collection `Colors` (modes Dark, Light) and `Typography` (modes Desktop, Tablet, Mobile). Read them from Figma. Do not invent hex values or type scales.
+
+## Screens on `mockup`
+
+Desktop dark is the structural reference. Light and mobile frames are the theme and breakpoint siblings.
+
+| Screen | Desktop dark | Desktop light | Mobile dark | Mobile light |
+| --- | --- | --- | --- | --- |
+| Landing | `60:1613` | `82:3` | `161:1310` | `196:281` |
+| Projects list | `73:205` | `82:302` | `188:722` | `196:641` |
+| Project detail | `247:2671` | `82:216` | `186:518` | `196:590` |
+| About | `75:623` | `82:402` | `188:856` | `196:713` |
+| Menu overlay | — | `82:537` | — | — |
+| Loading | `125:411` | — | — | — |
+| Hero | `263:3378` | — | — | — |
+
+Desktop frames are 1280 wide. Mobile frames are 375 wide. Extra `project-detail-page/desktop` frames below the sections are per-project case studies, not the default template.
+
+## Before changing UI
+
+1. Open a Figma session with `create_session` for this file key.
+2. Call `get_design_context` on the frame that matches the screen, theme, and viewport.
+3. Build it in Astro under `src/`. Adapt the reference to existing components. Do not paste generated React.
+4. When a screen has light and mobile siblings, keep layout, type, and color aligned with those frames.

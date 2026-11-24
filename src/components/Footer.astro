@@ -1,0 +1,231 @@
+---
+import ButtonCta from './ButtonCta.astro';
+import { navLinks, site } from '../data/site';
+---
+
+<footer class="site-footer" data-loader-lock data-menu-inert>
+  <div class="site-footer__container">
+    <div class="site-footer__content">
+      <div class="site-footer__cta">
+        <p class="text-label">
+          Right now I’m looking to enter a nice company environment if you like what you see, hit me up i would love
+          to chat :)
+        </p>
+        <a class="site-footer__email text-body" href={`mailto:${site.email}`}>{site.email}</a>
+        <ButtonCta label="Get in touch" href={`mailto:${site.email}`} />
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <div class="site-footer__column">
+          <h2 class="text-label uppercase">Explore</h2>
+          <ul role="list" class="site-footer__links">
+            {
+              navLinks.map((link) => (
+                <li>
+                  <a class="text-caption uppercase" href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="site-footer__column">
+          <h2 class="text-label uppercase">Contact me</h2>
+          <ul role="list" class="site-footer__links">
+            <li><a class="text-caption uppercase" href={`mailto:${site.email}`}>Email</a></li>
+            <li>
+              <a class="text-caption uppercase" href={site.instagramUrl} target="_blank" rel="noopener noreferrer">
+                Instagram
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <p class="site-footer__brand" data-fit-text aria-hidden="true">
+      <span>{site.name}</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 1;
+    padding-top: 3rem;
+    overflow: hidden;
+    color: var(--color-text-primary);
+  }
+
+  .site-footer__container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5.5rem;
+    min-height: 38.4375rem;
+    padding: 4rem 2rem 0;
+    background-color: var(--color-background-primary);
+  }
+
+  /* The texture is a full stamp frame. Only its top scallop should show. */
+  .site-footer__container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 4096 / 48;
+    background-image: url('../assets/textures/footer-dark.png');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
+    pointer-events: none;
+  }
+
+  :global([data-theme='light']) .site-footer__container::before {
+    background-image: none;
+  }
+
+  .site-footer__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .site-footer__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .site-footer__email:hover {
+    text-decoration: underline;
+  }
+
+  .site-footer__nav {
+    display: flex;
+    border-block: 1px solid var(--color-stroke-default);
+  }
+
+  .site-footer__column {
+    flex: 1 0 0;
+    min-width: 0;
+    padding: 1.5rem;
+    border-right: 1px solid var(--color-stroke-default);
+  }
+
+  .site-footer__column:first-child {
+    border-left: 1px solid var(--color-stroke-default);
+  }
+
+  .site-footer__column h2 {
+    margin-bottom: 1.0625rem;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.0625rem;
+  }
+
+  .site-footer__links a:hover {
+    text-decoration: underline;
+  }
+
+  .site-footer__brand {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: calc(100% + 4rem);
+    height: 32.421875vw;
+    min-height: 0;
+    margin-top: auto;
+    margin-inline: -2rem;
+    overflow: hidden;
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-bold);
+    line-height: 0.8;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .site-footer__brand span {
+    display: block;
+    font-size: 35.3125vw;
+    line-height: 0.8;
+    transform-origin: center bottom;
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer {
+      padding-top: 17.625rem;
+    }
+
+    :global([data-theme='light']) .site-footer__container::before {
+      background-image: url('../assets/textures/footer-light.png');
+    }
+
+    .site-footer__container {
+      min-height: 49.875rem;
+      padding: 7.5rem var(--page-gutter) 0;
+    }
+
+    .site-footer__content {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 8rem;
+    }
+
+    .site-footer__cta {
+      flex: 1 0 0;
+      justify-content: space-between;
+      gap: 0;
+    }
+
+    .site-footer__nav {
+      border: 1px solid var(--color-stroke-default);
+    }
+
+    .site-footer__column {
+      flex: none;
+      width: 15rem;
+      padding: 3rem;
+    }
+
+    .site-footer__column:first-child {
+      border-left: 0;
+    }
+
+    .site-footer__column:last-child {
+      border-right: 0;
+    }
+
+    .site-footer__brand {
+      width: calc(100% + 2 * var(--page-gutter));
+      margin-inline: calc(var(--page-gutter) * -1);
+    }
+  }
+</style>
+
+<script>
+  import { fittedScaleX } from '../lib/fit-text';
+
+  const brand = document.querySelector<HTMLElement>('[data-fit-text]');
+  const label = brand?.querySelector<HTMLElement>('span');
+
+  if (brand && label) {
+    const fit = () => {
+      label.style.transform = 'none';
+      const scale = fittedScaleX(label.scrollWidth, brand.clientWidth);
+      label.style.transform = `scaleX(${scale})`;
+    };
+
+    fit();
+    document.fonts?.ready.then(fit);
+    new ResizeObserver(fit).observe(brand);
+  }
+</script>

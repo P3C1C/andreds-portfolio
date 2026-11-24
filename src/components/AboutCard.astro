@@ -1,0 +1,32 @@
+---
+import type { CardVariant } from '../data/about';
+
+interface Props {
+  variant?: CardVariant;
+  as?: 'div' | 'li';
+  class?: string;
+}
+
+const { variant = 'plain', as: Tag = 'li', class: className } = Astro.props;
+---
+
+<Tag class:list={['about-card', `about-card--${variant}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .about-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .about-card--filled {
+    background-color: color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+  }
+
+  .about-card--outlined {
+    border: 1px solid var(--color-stroke-default);
+  }
+</style>

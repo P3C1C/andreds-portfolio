@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import AudioWave from './AudioWave.astro';
+import MenuButton from './MenuButton.astro';
+import SiteMenu from './SiteMenu.astro';
+import homeIcon from '../assets/icons/home.svg?url';
+---
+
+<header class="site-header" data-loader-lock>
+  <a href="/" class="site-header__home" aria-label="Home">
+    <Icon src={homeIcon} />
+  </a>
+  <AudioWave />
+  <div class="site-header__menu">
+    <MenuButton />
+    <SiteMenu />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: auto 2rem 3rem;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 24rem;
+    height: 3.625rem;
+    margin-inline: auto;
+    padding: 1rem;
+    border: 1px solid var(--color-stroke-default);
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+  }
+
+  .site-header__home {
+    display: inline-flex;
+  }
+
+  .site-header__menu {
+    position: relative;
+    display: flex;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header {
+      position: absolute;
+      inset: 0 0 auto;
+      justify-content: space-between;
+      max-width: none;
+      height: var(--header-height);
+      padding: 1rem 3rem;
+      border: 0;
+      background-color: transparent;
+    }
+  }
+</style>

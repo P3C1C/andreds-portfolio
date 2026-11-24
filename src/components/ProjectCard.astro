@@ -1,0 +1,160 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import arrowUpRight from '../assets/icons/arrow-up-right.svg?url';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, client, type, year, thumbnail, cover } = project.data;
+---
+
+<li class="project-card">
+  <a class="project-card__link" href={`/projects/${project.id}/`}>
+    <span class="project-card__type text-body-small">{type}</span>
+    <span class="project-card__main">
+      <span class="project-card__titles">
+        <span class="project-card__client text-h3">{client}</span>
+        <h2 class="text-h1 uppercase">{title}</h2>
+      </span>
+      <Image
+        class="project-card__thumb"
+        src={thumbnail ?? cover}
+        alt=""
+        widths={[120, 240]}
+        sizes="(min-width: 1024px) 7.3125rem, 5.5rem"
+        loading="lazy"
+      />
+    </span>
+    <span class="project-card__year text-body-small">{year}</span>
+    <Icon class="project-card__arrow" src={arrowUpRight} size={16} />
+  </a>
+</li>
+
+<style>
+  .project-card {
+    border-bottom: 1px solid var(--color-stroke-default);
+  }
+
+  .project-card__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'main main'
+      'type arrow'
+      'year arrow';
+    padding-block: 1.5rem;
+    color: var(--color-text-primary);
+    transition: background-color 200ms ease;
+  }
+
+  .project-card__main {
+    grid-area: main;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-card__titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    transition: padding-left 200ms ease;
+  }
+
+  .project-card__client {
+    color: color-mix(in srgb, var(--color-text-primary) 50%, transparent);
+  }
+
+  .project-card__titles h2 {
+    overflow-wrap: anywhere;
+  }
+
+  .project-card__link :global(.project-card__thumb) {
+    flex-shrink: 0;
+    width: 5.484375rem;
+    height: 3.5625rem;
+    object-fit: cover;
+    transition: opacity 200ms ease;
+  }
+
+  .project-card__type {
+    grid-area: type;
+  }
+
+  .project-card__year {
+    grid-area: year;
+    margin-top: 0.25rem;
+  }
+
+  .project-card__link :global(.project-card__arrow) {
+    grid-area: arrow;
+    align-self: center;
+  }
+
+  @media (min-width: 1024px) {
+    .project-card__link {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5rem;
+      padding: 2.5rem var(--page-gutter);
+    }
+
+    .project-card__type {
+      flex-shrink: 0;
+      width: 5.6875rem;
+    }
+
+    .project-card__main {
+      flex: 1;
+      align-items: flex-end;
+      margin-bottom: 0;
+      padding-inline: 3rem;
+    }
+
+    .project-card__titles {
+      gap: 0.4375rem;
+    }
+
+    .project-card__client {
+      font-weight: var(--font-weight-regular);
+    }
+
+    .project-card__link :global(.project-card__thumb) {
+      width: 7.3125rem;
+      height: 4.75rem;
+      opacity: 0;
+    }
+
+    .project-card__year {
+      margin-top: 0;
+    }
+
+    .project-card__link :global(.project-card__arrow) {
+      align-self: flex-end;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .project-card__link:hover,
+    .project-card__link:focus-visible {
+      background-color: color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+    }
+
+    .project-card__link:hover .project-card__titles,
+    .project-card__link:focus-visible .project-card__titles {
+      padding-left: 0.5rem;
+    }
+
+    .project-card__link:hover :global(.project-card__thumb),
+    .project-card__link:focus-visible :global(.project-card__thumb) {
+      opacity: 1;
+    }
+  }
+</style>

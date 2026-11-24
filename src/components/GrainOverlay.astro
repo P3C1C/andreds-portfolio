@@ -1,0 +1,24 @@
+---
+import noise from '../assets/textures/noise.svg?url';
+---
+
+<div class="grain" style={`--noise-url: url("${noise}");`} aria-hidden="true"></div>
+
+<style>
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: var(--color-text-primary);
+    opacity: var(--grain-opacity, 0.1);
+    -webkit-mask: var(--noise-url) repeat;
+    mask: var(--noise-url) repeat;
+    -webkit-mask-size: 240px 240px;
+    mask-size: 240px 240px;
+  }
+
+  :global([data-theme='light']) .grain {
+    --grain-opacity: 0.08;
+  }
+</style>

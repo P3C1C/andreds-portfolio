@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import arrowDown from '../assets/icons/arrow-elbow-down.svg?url';
+import arrowUpRight from '../assets/icons/arrow-up-right.svg?url';
+
+interface Props {
+  label: string;
+  href?: string;
+  icon?: 'down' | 'up-right';
+  external?: boolean;
+  class?: string;
+}
+
+const { label, href, icon = 'up-right', external = false, class: className } = Astro.props;
+const iconSrc = icon === 'down' ? arrowDown : arrowUpRight;
+const Tag = href ? 'a' : 'button';
+const linkProps = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : { type: 'button' as const };
+---
+
+<Tag class:list={['btn-cta', 'text-button', 'uppercase', className]} {...linkProps}>
+  <span>{label}</span>
+  <Icon src={iconSrc} size={16} />
+</Tag>
+
+<style>
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem 0.5rem 1rem;
+    background-color: var(--color-button-background);
+    color: var(--color-button-foreground);
+    white-space: nowrap;
+    transition:
+      filter 200ms ease,
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .btn-cta:hover {
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-button-background) 60%, transparent));
+  }
+
+  .btn-cta:active {
+    filter: none;
+    background-color: transparent;
+    color: var(--color-text-primary);
+    box-shadow: inset 0 0 0 1px var(--color-text-primary);
+  }
+</style>

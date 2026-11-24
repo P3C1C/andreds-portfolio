@@ -1,0 +1,52 @@
+---
+interface Props {
+  categories: readonly string[];
+  role: string;
+  class?: string;
+}
+
+const { categories, role, class: className } = Astro.props;
+const groups = [
+  { label: 'Category', values: categories },
+  { label: 'Role', values: [role] },
+];
+---
+
+<dl class:list={['project-meta', className]}>
+  {
+    groups.map((group) => (
+      <div class="project-meta__group">
+        <dt class="text-overline uppercase">{group.label}</dt>
+        {group.values.map((value) => (
+          <dd class="text-tag uppercase">{value}</dd>
+        ))}
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .project-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  .project-meta__group {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .project-meta__group::before {
+    content: '';
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-text-primary) 10%, transparent),
+      transparent
+    );
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+import Icon from './Icon.astro';
+import moon from '../assets/icons/moon.svg?url';
+import speaker from '../assets/icons/speaker.svg?url';
+import { DEFAULT_THEME } from '../lib/theme';
+---
+
+<nav class="site-menu" id="site-menu" data-menu hidden aria-label="Site">
+  <ul class="site-menu__list" role="list">
+    <li>
+      <a class="site-menu__row text-button uppercase" href="/about/">A bit about me</a>
+    </li>
+    <li>
+      <a class="site-menu__row text-button uppercase" href="/projects/">My work</a>
+    </li>
+    <li>
+      <button
+        type="button"
+        class="site-menu__row text-button uppercase"
+        data-theme-toggle
+        aria-pressed={DEFAULT_THEME === 'dark' ? 'true' : 'false'}
+      >
+        <span>Dark mode</span>
+        <Icon src={moon} size={16} />
+      </button>
+    </li>
+    <li>
+      <button
+        type="button"
+        class="site-menu__row text-button uppercase"
+        data-mute-toggle
+        aria-pressed="false"
+      >
+        <span>Mute</span>
+        <Icon src={speaker} size={16} />
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  import { wrapIndex } from '../lib/carousel';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  if (button && menu) {
+    const items = () => [button, ...menu.querySelectorAll<HTMLElement>('a, button')];
+
+    const setPageInert = (inert: boolean) => {
+      document.querySelectorAll<HTMLElement>('[data-menu-inert]').forEach((element) => {
+        if (inert) element.setAttribute('inert', '');
+        else element.removeAttribute('inert');
+      });
+    };
+
+    const setOpen = (open: boolean, restoreFocus = false) => {
+      menu.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      setPageInert(open);
+      if (open) {
+        menu.setAttribute('role', 'dialog');
+        menu.setAttribute('aria-modal', 'true');
+        items()[1]?.focus();
+      } else {
+        menu.removeAttribute('role');
+        menu.removeAttribute('aria-modal');
+        if (restoreFocus) button.focus();
+      }
+    };
+
+    button.addEventListener('click', () => setOpen(menu.hasAttribute('hidden')));
+
+    document.addEventListener('keydown', (event) => {
+      if (menu.hidden) return;
+      if (event.key === 'Escape') {
+        setOpen(false, true);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const list = items();
+      const index = list.indexOf(document.activeElement as HTMLElement);
+      event.preventDefault();
+      list[wrapIndex(index + (event.shiftKey ? -1 : 1), list.length)]?.focus();
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (menu.hidden || !(target instanceof Node)) return;
+      if (menu.contains(target) || button.contains(target)) return;
+      setOpen(false, menu.contains(document.activeElement));
+    });
+  }
+</script>
+
+<style>
+  .site-menu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 1.5625rem);
+    z-index: 40;
+    width: 12.625rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-stroke-default);
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+  }
+
+  .site-menu[hidden] {
+    display: none;
+  }
+
+  .site-menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .site-menu__list li + li {
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-stroke-default);
+  }
+
+  .site-menu__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    transition: opacity 150ms ease;
+  }
+
+  .site-menu__row:hover {
+    opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .site-menu:not([hidden]) {
+      animation: menu-in 150ms ease-out;
+    }
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.25rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .site-menu {
+      top: 3rem;
+      bottom: auto;
+    }
+
+    @keyframes menu-in {
+      from {
+        opacity: 0;
+        transform: translateY(-0.25rem);
+      }
+    }
+  }
+</style>

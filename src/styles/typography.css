@@ -1,0 +1,107 @@
+/* One class per Figma text style. Sizes switch per breakpoint through the tokens. */
+
+.text-display,
+.text-display-accent,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h3-accent {
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-default);
+}
+
+.text-display,
+.text-h1,
+.text-h2,
+.text-h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-display {
+  font-size: var(--font-size-3xl);
+}
+
+.text-display-accent {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-display);
+  letter-spacing: var(--tracking-accent);
+}
+
+.text-h1 {
+  font-size: var(--font-size-2xl);
+}
+
+.text-h2 {
+  font-size: var(--font-size-xl);
+}
+
+.text-h3 {
+  font-size: var(--font-size-lg);
+}
+
+.text-h3-accent {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+}
+
+.text-body,
+.text-body-emphasis,
+.text-label,
+.text-body-small,
+.text-caption,
+.text-button,
+.text-overline,
+.text-tag {
+  font-family: var(--font-sans);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-default);
+}
+
+.text-body {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-body-emphasis {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.text-label {
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-body-small {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-caption {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-button {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.text-overline {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-tag {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

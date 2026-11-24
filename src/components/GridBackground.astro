@@ -1,0 +1,116 @@
+<div class="grid-bg" aria-hidden="true">
+  <span class="grid-bg__v grid-bg__v--outer-start"></span>
+  <span class="grid-bg__v grid-bg__v--inner-start"></span>
+  <span class="grid-bg__v grid-bg__v--inner-end"></span>
+  <span class="grid-bg__v grid-bg__v--outer-end"></span>
+  <span class="grid-bg__h grid-bg__h--1"></span>
+  <span class="grid-bg__h grid-bg__h--2"></span>
+  <span class="grid-bg__h grid-bg__h--3"></span>
+  <span class="grid-bg__h grid-bg__h--4"></span>
+  <span class="grid-bg__fade"></span>
+</div>
+
+<style>
+  .grid-bg {
+    --grid-line: var(--color-background-surface);
+    position: absolute;
+    inset: 0 0 auto;
+    height: 51.1875rem;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .grid-bg__v,
+  .grid-bg__h {
+    position: absolute;
+    background-color: var(--grid-line);
+  }
+
+  .grid-bg__v {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+  }
+
+  .grid-bg__v--outer-start,
+  .grid-bg__v--outer-end {
+    display: none;
+  }
+
+  .grid-bg__v--outer-start {
+    left: calc(var(--page-gutter) - 1px);
+  }
+
+  .grid-bg__v--inner-start {
+    left: calc(50% - 6.40625rem);
+  }
+
+  .grid-bg__v--inner-end {
+    left: calc(50% + 6.40625rem);
+  }
+
+  .grid-bg__v--outer-end {
+    right: var(--page-gutter);
+  }
+
+  .grid-bg__h {
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  .grid-bg__h--1 {
+    top: 7.625rem;
+  }
+
+  .grid-bg__h--2 {
+    top: 17.8125rem;
+  }
+
+  .grid-bg__h--3 {
+    top: 38.1875rem;
+  }
+
+  .grid-bg__h--4 {
+    top: 48.3125rem;
+  }
+
+  .grid-bg__fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--color-background-primary) 50%, transparent) 72.115%,
+      var(--color-background-primary) 98.464%
+    );
+  }
+
+  @media (min-width: 1024px) {
+    .grid-bg {
+      inset: 0;
+      height: auto;
+    }
+
+    .grid-bg__v--outer-start,
+    .grid-bg__v--outer-end {
+      display: block;
+    }
+
+    .grid-bg__h--1 {
+      top: 12.75rem;
+    }
+
+    .grid-bg__h--2 {
+      top: 25.5625rem;
+    }
+
+    .grid-bg__h--3 {
+      top: 51.125rem;
+    }
+
+    .grid-bg__h--4 {
+      top: 63.875rem;
+    }
+  }
+</style>

@@ -1,0 +1,80 @@
+/* Design tokens from Figma file `portfoli-` (collections `Colors` and `Typography`). */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --color-background-primary: #030203;
+  --color-background-surface: #f9f9f933;
+  --color-text-primary: #f9f9f9;
+  --color-text-on-surface: #030203;
+  --color-stroke-default: #f9f9f933;
+  --color-button-background: #f9f9f9;
+  --color-button-foreground: #030203;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --color-background-primary: #f9f9f9;
+  --color-background-surface: #0302031a;
+  --color-text-primary: #030203;
+  --color-text-on-surface: #030203;
+  --color-stroke-default: #03020333;
+  --color-button-background: #030203;
+  --color-button-foreground: #f9f9f9;
+}
+
+/* Typography / Mobile (default) */
+:root {
+  --font-size-xs: 0.625rem;
+  --font-size-sm: 0.75rem;
+  --font-size-base: 0.8125rem;
+  --font-size-md: 0.9375rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.25rem;
+  --font-size-display: 2.5rem;
+
+  /* Text style `Label / Mobile` is 14px, between the `base` and `md` mobile sizes. */
+  --font-size-label: 0.875rem;
+
+  --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-accent: 'Baskervville', 'Times New Roman', Georgia, serif;
+  --font-title: 'New Title', Impact, 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-pixel: 'PP NeueBit', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --leading-tight: 0.95;
+  --leading-body: 1.4;
+  --tracking-default: -0.01em;
+  --tracking-accent: -0.065em;
+}
+
+/* Typography / Tablet */
+@media (min-width: 768px) {
+  :root {
+    --font-size-base: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.375rem;
+    --font-size-xl: 1.75rem;
+    --font-size-2xl: 2.5rem;
+    --font-size-3xl: 3rem;
+    --font-size-display: 3.375rem;
+    --font-size-label: var(--font-size-md);
+  }
+}
+
+/* Typography / Desktop */
+@media (min-width: 1024px) {
+  :root {
+    --font-size-lg: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-2xl: 3rem;
+    --font-size-3xl: 4rem;
+    --font-size-display: 4.5rem;
+  }
+}
